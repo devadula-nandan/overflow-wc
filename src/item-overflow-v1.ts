@@ -39,6 +39,7 @@ export class OverflowWc extends LitElement {
       align-items: center;
       white-space: nowrap;
       text-align: left;
+      margin: 0.125rem;
     }
     span {
       display: inline-block;
@@ -49,7 +50,7 @@ export class OverflowWc extends LitElement {
     cds-tag,
     cds-operational-tag,
     cds-dismissible-tag {
-      margin: 4px 2px;
+      margin: 0.125rem;
     }
   `;
 
@@ -120,51 +121,58 @@ export class OverflowWc extends LitElement {
     this.computeVisibleForCurrentWidth();
   }
 
-private computeVisibleForCurrentWidth() {
-  const containerWidth = this.parentElement?.clientWidth ?? 0;
-  const widths = this.measuredWidths;
-  const totalItems = this.items.length;
+  private computeVisibleForCurrentWidth() {
+    const containerWidth = this.parentElement?.clientWidth ?? 0;
+    const widths = this.measuredWidths;
+    const totalItems = this.items.length;
 
-  if (totalItems === 0 || containerWidth <= 0) {
-    if (this.visibleCount !== 0) this.visibleCount = 0;
-    return;
-  }
-
-  if (!this._cumulativeWidths || this._cumulativeWidths.length !== widths.length) {
-    const cumulative = new Array(widths.length);
-    let sum = 0;
-    for (let i = 0; i < widths.length; i++) {
-      sum += widths[i] ?? 0;
-      cumulative[i] = sum;
+    if (totalItems === 0 || containerWidth <= 0) {
+      if (this.visibleCount !== 0) this.visibleCount = 0;
+      return;
     }
-    this._cumulativeWidths = cumulative;
-  }
 
-  const cumulative = this._cumulativeWidths;
-  const overflowWidth = this.overflowWidth || 0;
+    if (
+      !this._cumulativeWidths ||
+      this._cumulativeWidths.length !== widths.length
+    ) {
+      const cumulative = new Array(widths.length);
+      let sum = 0;
+      for (let i = 0; i < widths.length; i++) {
+        sum += widths[i] ?? 0;
+        cumulative[i] = sum;
+      }
+      this._cumulativeWidths = cumulative;
+    }
 
-  let lo = 0, hi = widths.length - 1, mid;
-  while (lo <= hi) {
-    mid = (lo + hi) >> 1;
-    if (cumulative[mid] <= containerWidth) lo = mid + 1;
-    else hi = mid - 1;
-  }
+    const cumulative = this._cumulativeWidths;
+    const overflowWidth = this.overflowWidth || 0;
 
-  let count = lo;
-  const overflowingItems = totalItems - count;
-  const shouldReserveOverflow = overflowingItems > 0 && overflowWidth > 0;
+    let lo = 0,
+      hi = widths.length - 1,
+      mid;
+    while (lo <= hi) {
+      mid = (lo + hi) >> 1;
+      if (cumulative[mid] <= containerWidth) lo = mid + 1;
+      else hi = mid - 1;
+    }
 
-  if (shouldReserveOverflow) {
-    while (count > 0 && cumulative[count - 1] + overflowWidth > containerWidth) {
-      count--;
+    let count = lo;
+    const overflowingItems = totalItems - count;
+    const shouldReserveOverflow = overflowingItems > 0 && overflowWidth > 0;
+
+    if (shouldReserveOverflow) {
+      while (
+        count > 0 &&
+        cumulative[count - 1] + overflowWidth > containerWidth
+      ) {
+        count--;
+      }
+    }
+
+    if (count !== this.visibleCount) {
+      this.visibleCount = count;
     }
   }
-
-  if (count !== this.visibleCount) {
-    this.visibleCount = count;
-  }
-}
-
 
   render() {
     const {

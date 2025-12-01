@@ -47,11 +47,7 @@ function itemRenderer(item: any) {
   switch (ITEM_VARIANT) {
     case "tag":
       return html`
-        <cds-tag
-          data-id=${item.id}
-          type=${item.type}
-          size="md"
-        >
+        <cds-tag data-id=${item.id} type=${item.type} size="md">
           ${item.label}
         </cds-tag>
       `;
@@ -70,11 +66,7 @@ function itemRenderer(item: any) {
 
     case "button":
       return html`
-        <cds-button
-          kind="ghost"
-          size="md"
-          @click=${() => item.onClick?.(item)}
-        >
+        <cds-button kind="ghost" size="md" @click=${() => item.onClick?.(item)}>
           ${item.label}
         </cds-button>
       `;
@@ -114,7 +106,7 @@ function overflowRenderer(hiddenItems: any[]) {
         <cds-tag
           @click=${() => console.log(hiddenItems)}
           type="gray"
-          size="md"
+          size=${hiddenItems[0]?.size || "md"}
         >
           +${hiddenItems.length}
         </cds-tag>
@@ -122,16 +114,34 @@ function overflowRenderer(hiddenItems: any[]) {
 
     case "operational-tag":
       return html`
-        <cds-popover open caret="" align="bottom" autoalign>
+        <cds-popover
+          caret
+          align="bottom-right"
+          autoalign
+          highcontrast
+          autoalign-boundary="#left"
+        >
           <cds-operational-tag
-            @click=${() => console.log(hiddenItems)}
+            style="user-select: none;"
+            @cds-operational-tag-selected=${(e: any) => {
+              let isSelected = e.target.selected;
+              const pop = e.target?.closest("cds-popover");
+              requestAnimationFrame(() => {
+                if (pop) pop.open = isSelected || false;
+              });
+            }}
             type="gray"
             text="+${hiddenItems.length}"
-            size="md"
+            size=${hiddenItems[0]?.size || "md"}
           ></cds-operational-tag>
           <cds-popover-content>
             <div style="padding: 1rem; font-size: 14px;">
-              ${hiddenItems.map((item) => html` <div>${item.label}</div> `)}
+              ${hiddenItems
+                .slice(0, 10)
+                .map((item) => html` <div>${item.label}</div> `)}
+              ${hiddenItems.length > 10
+                ? html`<button @click=${()=> console.log(hiddenItems)} style="padding: 0; outline: none; border: none; background: transparent; color: var(--cds-link-inverse); cursor: pointer; margin-top: 0.4rem;">View all (${hiddenItems.length})</button>`
+                : ""}
             </div>
           </cds-popover-content>
         </cds-popover>
@@ -143,7 +153,7 @@ function overflowRenderer(hiddenItems: any[]) {
           @click=${() => console.log("Hidden:", hiddenItems)}
           align="left"
           kind="ghost"
-          size="md"
+          size=${hiddenItems[0]?.size || "md"}
         >
           <svg
             focusable="false"
@@ -417,7 +427,9 @@ window.addEventListener("load", () => {
     }
   });
 
-  popovers.forEach((popover) => popover.addEventListener("click", (e) => e.stopPropagation()));
+  popovers.forEach((popover) =>
+    popover.addEventListener("click", (e) => e.stopPropagation())
+  );
 
   initVals();
   updateItems(); // initial
