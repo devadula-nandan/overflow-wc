@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Reset CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+    />
+
+    <!-- Fonts -->
+    <link
+      rel="stylesheet"
+      href="https://1.www.s81c.com/common/carbon/plex/sans.css"
+    />
+
+    <!-- Carbon CSS Grid -->
+    <link
+      rel="stylesheet"
+      href="https://1.www.s81c.com/common/carbon/web-components/tag/next/cssgrid.css"
+    />
+
+    <!-- Carbon Themes -->
+<link
+  rel="stylesheet"
+  href="https://1.www.s81c.com/common/carbon/web-components/tag/next/themes.css" />
+
+    <title>Lit + Vite + TypeScript</title>
+
+    <!-- Carbon web-components -->
+    <script type="module" src="/src/main.ts"></script>
+    <script
+      type="module"
+      src="https://1.www.s81c.com/common/carbon/web-components/version/v2.43.0/button.min.js"
+    ></script>
+    <script
+      type="module"
+      src="https://1.www.s81c.com/common/carbon/web-components/version/v2.43.0/icon-button.min.js"
+    ></script>
+    <script
+      type="module"
+      src="https://1.www.s81c.com/common/carbon/web-components/version/v2.43.0/tag.min.js"
+    ></script>
+    <script
+      type="module"
+      src="https://1.www.s81c.com/common/carbon/web-components/version/v2.43.0/number-input.min.js"
+    ></script>
+    <script
+      type="module"
+      src="https://1.www.s81c.com/common/carbon/web-components/version/v2.43.0/heading.min.js"
+    ></script>
+    <script
+      type="module"
+      src="https://1.www.s81c.com/common/carbon/web-components/version/v2.43.0/layer.min.js"
+    ></script>
+    <script
+      type="module"
+      src="https://1.www.s81c.com/common/carbon/web-components/version/v2.43.0/dropdown.min.js"
+    ></script>
+    <script
+      type="module"
+      src="https://1.www.s81c.com/common/carbon/web-components/version/v2.43.0/form.min.js"
+    ></script>
+    <script
+      type="module"
+      src="https://1.www.s81c.com/common/carbon/web-components/version/v2.43.0/stack.min.js"
+    ></script>
+    <script
+      type="module"
+      src="https://1.www.s81c.com/common/carbon/web-components/version/v2.43.0/select.min.js"
+    ></script>
+    <script
+      type="module"
+      src="https://1.www.s81c.com/common/carbon/web-components/version/v2.43.0/grid.min.js"
+    ></script>
+    <script
+      type="module"
+      src="https://1.www.s81c.com/common/carbon/web-components/version/v2.43.0/popover.min.js"
+    ></script>
+    <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.43.0/overflow-menu.min.js"></script>
+
+    <style>
+      body{
+        background-color: var(--cds-background);
+      }
+      * {
+         font-family:
+          IBM Plex Sans,
+          Helvetica Neue,
+          Arial,
+          sans-serif;
+        text-align: start;
+      }
+
+      *:not(:defined) {
+        display: none;
+      }
+
+      cds-heading {
+        color: var(--cds-text-primary);
+      }
+
+      .resize {
+        resize: horizontal;
+        padding: 1rem;
+        border: dashed 1px var(--cds-border-strong);
+        outline: dashed 1px var(--cds-border-strong);
+        outline-offset: -17px;
+        overflow: hidden;
+        max-inline-size: calc(100% - 34px);
+        min-inline-size: 120px;
+        box-shadow: inset 0 0 0 1rem var(--cds-layer-01);
+      }
+
+      .control-panel {
+        padding: 1rem;
+            min-height: calc(100vh - 2rem);
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        p{
+          margin: 0;
+          color: var(--cds-text-secondary);
+        }
+      }
+      .custom-flex {
+        display: flex; inline-size: 100vw;
+      }
+      .left{
+        flex: 85; max-inline-size: calc(100% - 24rem); padding: 1rem;
+      }
+      .right{
+        border-left: solid 1px var(--cds-border-strong);
+         flex: 15;
+      }
+      #reload-page::part(button) {
+        padding-inline-end: 1rem;
+      }
+
+      @media (max-width: 768px) {
+        .custom-flex {
+          flex-direction: column;
+          inline-size: unset;
+        }
+        .left{
+          max-inline-size: calc(100% - 2rem);
+        }
+        .control-panel {
+          min-height: unset;
+        }
+        .right{
+          border-left: none;
+          border-top: solid 1px var(--cds-border-strong);
+        }
+      }
+    </style>
+  </head>
+
+  <body class="cds-theme-zone-white">
+      <div class="custom-flex">
+        <div class="left">
+        <div class="resize">
+          <script>
+            for (let i = 0; i < 1; i++) {
+              document.write(`<div><overflow-wc /></div>`);
+            }
+          </script>
+        </div>
+        </div>
+        <div class="right">
+                <cds-layer>
+          <div class="control-panel">
+            <cds-heading>Item overflow</cds-heading>
+            <p>Note: Some controls are not live. Please refresh the page if you notice any issues.</p>
+            <cds-form id="test-form">
+              <cds-stack gap="6">
+                <cds-select label-text="Theme">
+                  <cds-select-item selected value="white"
+                    >White</cds-select-item
+                  >
+                  <cds-select-item value="g10">G10</cds-select-item>
+                  <cds-select-item value="g90">G90</cds-select-item>
+                  <cds-select-item value="g100">G100</cds-select-item>
+                </cds-select>
+
+                <cds-number-input
+                  id="item-count"
+                  label="Number of Items"
+                  min="0"
+                  max="200"
+                  value="24"
+                  step="1"
+                  invalid-text="Stress testing huh?"
+                  icon-description="Add/decrement number"
+                ></cds-number-input>
+
+                <cds-select label-text="Item Renderer">
+                  <cds-select-item selected value="tag">Tag</cds-select-item>
+                  <cds-select-item value="button">Button</cds-select-item>
+                  <cds-select-item value="icon-button"
+                    >Icon Button</cds-select-item
+                  >
+                </cds-select>
+
+                <cds-select label-text="Overflow Renderer">
+                  <cds-select-item value="tag">Tag</cds-select-item>
+                  <cds-select-item selected value="operational-tag"
+                    >Operational tag</cds-select-item
+                  >
+                  <cds-select-item value="icon-button"
+                    >Icon Button</cds-select-item
+                  >
+                  <cds-select-item value="overflow-menu"
+                    >Overflow menu</cds-select-item
+                  >
+
+                </cds-select>
+                <div style="display: flex;">
+                  <cds-button id="reload-page" kind="secondary" size="md">Reload page</cds-button>
+                  <cds-button id="reset-storage" kind="danger" size="md">Reset saved state</cds-button>
+                  </div>
+              </cds-stack>
+              <!-- live code snippet -->
+              <!-- <pre>
+const updateItems = () => {
+  const raw =
+    itemCountInput?.value ?? itemCountInput?.getAttribute?.("value");
+  const count = parseInt(raw || "0", 10) || 0;
+  components.forEach((component: any) => {
+    component.items = createItems(count);
+    component.itemRenderer = itemRenderer;
+    component.overflowRenderer = overflowRenderer;
+  });
+  // persist count
+  const cur = loadState() || {};
+  cur.count = count;
+  saveState(cur);
+};
+              </pre> -->
+            </cds-form>
+            
+          </div>
+        </cds-layer>
+        </div>
+      </div>
+
+
+
+
+
+  </body>
+    <script>
+      // Reset persisted state and reload
+      window.addEventListener('load', () => {
+        const btn = document.getElementById('reset-storage');
+        btn?.addEventListener('click', () => {
+          try { localStorage.removeItem('overflow-wc-config'); } catch (e) {}
+          window.location.reload();
+        });
+      });
+
+      window.addEventListener('load', () => {
+        const btn = document.getElementById('reload-page');
+        btn?.addEventListener('click', () => {
+          window.location.reload();
+        });
+      });
+    </script>
+</html>
