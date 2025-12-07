@@ -112,9 +112,8 @@
         max-inline-size: calc(100% - 34px);
         min-inline-size: 120px;
       }
-
-      .component-container {
-        margin: 0.125rem;
+      overflow-wc {
+        min-block-size: 2rem;
       }
 
       .control-panel {
@@ -172,7 +171,7 @@
         <div class="resize">
           <script>
             for (let i = 0; i < 1; i++) {
-              document.write(`<div class="component-container"><overflow-wc /></div>`);
+              document.write(`<div><overflow-wc /></div>`);
             }
           </script>
         </div>
