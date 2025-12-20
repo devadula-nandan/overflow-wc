@@ -67,8 +67,6 @@ export class OverflowWc extends LitElement {
 
   async firstUpdated() {
     await this.updateComplete;
-    this.measureAllItems();
-
     if (!this.resizeObserver) {
       this.resizeObserver = new ResizeObserver(() => this.onContainerResize());
       this.resizeObserver.observe(this.parentElement || this);
@@ -102,12 +100,10 @@ export class OverflowWc extends LitElement {
         widths[index] = el ? el.getBoundingClientRect().width : 0;
       });
       this.measureOverflowWidth();
-
       this.measuredWidths = widths;
       this.measured = true;
-
       this.updateComplete.then(() => {
-        this.computeVisibleForCurrentWidth();
+        this.computeVisibleForCurrentWidth({ force: true });
       });
     });
   }
@@ -121,7 +117,7 @@ export class OverflowWc extends LitElement {
     this.computeVisibleForCurrentWidth();
   }
 
-  private computeVisibleForCurrentWidth() {
+  private async computeVisibleForCurrentWidth({ force = false } = {}) {
     const containerWidth = this.parentElement?.clientWidth ?? 0;
     const widths = this.measuredWidths;
     const totalItems = this.items.length;
@@ -132,6 +128,7 @@ export class OverflowWc extends LitElement {
     }
 
     if (
+      force ||
       !this._cumulativeWidths ||
       this._cumulativeWidths.length !== widths.length
     ) {

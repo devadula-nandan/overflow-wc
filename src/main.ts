@@ -74,7 +74,8 @@ function itemRenderer(item: any) {
     case "icon-button":
     default:
       return html`
-        <cds-button
+        <div style="block-size: 40px; inline-size: 40px;">
+          <cds-button
           kind="ghost"
           size="md"
           tooltip-text=${item.label}
@@ -95,6 +96,7 @@ function itemRenderer(item: any) {
             <path d="M17 15V8h-2v7H8v2h7v7h2v-7h7v-2z"></path>
           </svg>
         </cds-button>
+        </div>
       `;
   }
 }
@@ -177,6 +179,7 @@ function overflowRenderer(hiddenItems: any[]) {
 
     case "icon-button":
       return html`
+      <div style="block-size: 40px; inline-size: 40px;">
         <cds-icon-button
           @click=${() => console.log("Hidden:", hiddenItems)}
           align="left"
@@ -201,6 +204,7 @@ function overflowRenderer(hiddenItems: any[]) {
           </svg>
           <span slot="tooltip-content">+${hiddenItems.length}</span>
         </cds-icon-button>
+        </div>
       `;
 
     case "overflow-menu":
