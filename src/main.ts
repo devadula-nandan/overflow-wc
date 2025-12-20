@@ -28,12 +28,24 @@ const WORDS = [
 ];
 
 function createItems(count: number) {
-  return Array.from({ length: count }).map((_, i) => ({
-    id: `item-${i + 1}`,
-    label: WORDS[i % WORDS.length],
-    type: TAG_TYPES[i % TAG_TYPES.length],
-    onClick: () => console.log(`Clicked item-${i + 1}`),
-  }));
+  const wordsLen = WORDS.length;
+  const typesLen = TAG_TYPES.length;
+
+  const handleClick = (id: number, word: string) => {
+    alert(`Clicked item-${id} ${word}`);
+  };
+
+  return Array.from({ length: count }, (_, i) => {
+    const index = i + 1;
+    const word = WORDS[i % wordsLen];
+
+    return {
+      id: `item-${index}`,
+      label: word,
+      type: TAG_TYPES[i % typesLen],
+      onClick: () => handleClick(index, word),
+    };
+  });
 }
 
 type ItemVariant = "tag" | "dismissable-tag" | "button" | "icon-button";
